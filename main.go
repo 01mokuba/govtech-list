@@ -47,10 +47,8 @@ func main() {
 		// /companies - which will retrieve a list of companies a user can see
 		// /companies/like/:companyID - which will capture likes sent to a particular company
 		api.GET("/companies", CompanyHandler)
-		api.POST("/companies/like/:companyID", LikeCompany)
+		// api.POST("/companies/like/:companyID", LikeCompany)
 	}
-
-	fmt.Print(companies)
 
 	// Start and run the server
 	router.Run(":3000")
@@ -62,21 +60,21 @@ func CompanyHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, companies)
 }
 
-// LikeCompany increments the likes of a particular Company Item
-func LikeCompany(c *gin.Context) {
-	// confirm Company ID sent is valid
-	// remember to import the `strconv` package
-	if companyid, err := strconv.Atoi(c.Param("companyID")); err == nil {
-		// find company, and increment likes
-		for i := 0; i < len(companies); i++ {
-			if companies[i].ID == companyid {
-				companies[i].Likes++
-			}
-		}
-		// return a pointer to the updated companies list
-		c.JSON(http.StatusOK, &companies)
-	} else {
-		// Company ID is invalid
-		c.AbortWithStatus(http.StatusNotFound)
-	}
+// // LikeCompany increments the likes of a particular Company Item
+// func LikeCompany(c *gin.Context) {
+// 	// confirm Company ID sent is valid
+// 	// remember to import the `strconv` package
+// 	if companyid, err := strconv.Atoi(c.Param("companyID")); err == nil {
+// 		// find company, and increment likes
+// 		for i := 0; i < len(companies); i++ {
+// 			if companies[i].ID == companyid {
+// 				companies[i].Likes++
+// 			}
+// 		}
+// 		// return a pointer to the updated companies list
+// 		c.JSON(http.StatusOK, &companies)
+// 	} else {
+// 		// Company ID is invalid
+// 		c.AbortWithStatus(http.StatusNotFound)
+// 	}
 }
