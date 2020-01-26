@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -42,13 +43,14 @@ func main() {
 				"message": "pong",
 			})
 		})
+		// Our API will consit of just two routes
+		// /companies - which will retrieve a list of companies a user can see
+		// /companies/like/:companyID - which will capture likes sent to a particular company
+		api.GET("/companies", CompanyHandler)
+		api.POST("/companies/like/:companyID", LikeCompany)
 	}
 
-	// Our API will consit of just two routes
-	// /companies - which will retrieve a list of companies a user can see
-	// /companies/like/:companyID - which will capture likes sent to a particular company
-	api.GET("/companies", CompanyHandler)
-	api.POST("/companies/like/:companyID", LikeCompany)
+	fmt.Print(companies)
 
 	// Start and run the server
 	router.Run(":3000")
@@ -71,7 +73,6 @@ func LikeCompany(c *gin.Context) {
 				companies[i].Likes++
 			}
 		}
-
 		// return a pointer to the updated companies list
 		c.JSON(http.StatusOK, &companies)
 	} else {
